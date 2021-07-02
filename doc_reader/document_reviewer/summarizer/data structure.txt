@@ -1,0 +1,12 @@
+In the above-mentioned equation, the variables x and y can take any values such as integral
+numbers (10, 20), real numbers (0.23, 5.5), or just 0 and 1. To solve the equation, we need to
+relate them to the kind of values they can take, and data type is the name used in computer science
+programming for this purpose. A data type in a programming language is a set of data with
+predefined values. Examples of data types are: integer, floating point, unit number, character,
+string, etc.
+Computer memory is all filled with zeros and ones. If we have a problem and we want to code it,
+it’s very difficult to provide the solution in terms of zeros and ones. To help users, programming
+languages and compilers provide us with data types. For example, integer takes 2 bytes (actual
+value depends on compiler), float takes 4 bytes, etc. This says that in memory we are combining
+2 bytes (16 bits) and calling it an integer. Similarly, combining 4 bytes (32 bits) and calling it a
+float. A data type reduces the coding effort. At the top level, there are two types of data types:

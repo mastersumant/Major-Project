@@ -1,0 +1,431 @@
+<!-- djangotemplates/example/templates/about.html -->
+
+{% extends "base.html" %} <!-- Add this for inheritance -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Summary reviewer {% endblock %}</title>
+    {% block styling %}
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  color: #262626;
+  font-size: 1rem;
+}
+
+html {
+  font-size: 16px;
+  background-color: #fbfbfb;
+}
+
+#wrapper {
+  margin: 1rem auto;
+  max-width: 480px;
+}
+
+#wrapper div + div {
+  margin-top: 1rem;
+}
+
+h1 {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+p {
+  text-align: justify;
+}
+
+button {
+  margin-right: 0.5rem;
+  float: left;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+
+button:focus::before {
+  content: "👉";
+  position: absolute;
+  left: -1.25rem;
+  top: 0.1rem;
+  font-size: 0.9rem;
+}
+
+.play::after {
+  content: "🔊";
+}
+
+.pause::after {
+  content: "🔇";
+}
+
+.resume::after {
+  content: "🔉";
+}
+/*--------------------------------------------------------------
+Accessibility
+--------------------------------------------------------------*/
+/* Text meant only for screen readers */
+
+.screen-reader-text {
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
+.screen-reader-text:hover,
+.screen-reader-text:active,
+.screen-reader-text:focus {
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+  clip: auto !important;
+  color: #21759b;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  height: auto;
+  left: 5px;
+  line-height: normal;
+  padding: 15px 23px 14px;
+  text-decoration: none;
+  top: 5px;
+  width: auto;
+  z-index: 100000;
+  /* Above WP toolbar */
+}
+/*--------------------------------------------------------------
+Layouts
+--------------------------------------------------------------*/
+body {
+  line-height: 1.4;
+}
+
+.centered {
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+@media screen and (min-width: 52em) {
+  .centered {
+    max-width: 52em;
+  }
+}
+/*--------------------------------------------------------------
+Header styles minus menu
+--------------------------------------------------------------*/
+.masthead {
+  background: hsl(0, 0%, 90%);
+}
+
+.site-title {
+  margin: 0 0 1em;
+  padding: 1em 0;
+  font-size: 2em;
+  font-weight: 300;
+  text-align: center;
+  color: black;
+}
+
+@media screen and (min-width: 44.44em) {
+  .site-title {
+    font-size: 2em;
+  }
+}
+
+@media screen and (min-width: 50em) {
+  .site-title {
+    font-size: 2.5em;
+  }
+}
+
+.site-title a {
+  color: hsl(5, 45%, 95%);
+  text-decoration: none;
+}
+
+.site-title a:hover {
+  text-decoration: underline;
+}
+
+/* Base styles */
+.site-title {
+  margin-bottom: 0;
+}
+
+.main-menu {
+  padding: .4em 1em;
+  color: white;
+  background: hsl(0, 0%, 20%);
+}
+
+.post-content {
+  padding: 0 1.4em 1.4em;
+}
+
+.sidebar {
+  padding: .5em 1.4em 1em;
+  background: hsl(0, 0%, 90%);
+  overflow: hidden;
+}
+
+.example-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.example-menu a {
+  display: block;
+  padding: .4em 0;
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.5s ease;
+}
+
+.example-menu a:hover,
+.example-menu a:focus {
+  padding: .4em 1em;
+  background: hsl(0, 0%, 20%);
+  color: white;
+}
+
+.footer-area {
+  padding: .4em 1em;
+  text-align: center;
+  background: hsl(0, 0%, 75%);
+}
+/* Sidebar switcher buttons */
+
+@media screen and (max-width: 40em) {
+  /* Hide switcher on small screens */
+  
+  .sidebar-switcher {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 40em) {
+  .sidebar-switcher {
+    position: absolute;
+    right: 0;
+    padding: .4em 1em;
+    color: hsl(0, 0%, 40%);
+  }
+  .sidebar-switcher a {
+    color: hsl(0, 0%, 40%);
+    padding-left: .4em;
+  }
+  .sidebar-switcher a:hover,
+  .sidebar-switcher a:focus {
+    color: hsl(0, 0%, 20%);
+  }
+}
+
+/* flexbox styles */
+@media screen and (min-width: 40em) {
+  .outer-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+  }
+  .post-content {
+    max-width: 40em;
+    margin: 0 auto;
+  }
+  .main-area {
+    flex: 1 1 auto;
+    order: 1;
+  }
+  .sidebar {
+    flex: 0 0 12em;
+    order: 2;
+  }
+  .sidebar-left {
+    order: 0;
+  }
+  .no-sidebar {
+    flex-direction: column;
+  }
+  .hide {
+    flex: 0 0 0;
+    padding: 0;
+    color: hsla(0, 0%, 0%, 0);
+    transition: color .2s ease, flex .5s ease .3s, padding .5s ease .3s;
+  }
+  .hide a {
+    color: hsla(0, 0%, 0%, 0);
+  }
+} /* mq 40em */
+.tab { 
+       display:inline-block; 
+       margin-left: 720px; 
+}
+    </style>
+    {% endblock styling %}
+</head>
+<body>
+  {% block pagecontent %}
+  <div class="outer-wrap">
+
+    <header class="masthead">
+      
+          
+      
+      <div class="centered">
+        <div class="site-branding">
+          <h1 class="site-title">Intelligent document summarizer</h1>
+        </div>
+        <!-- .site-title -->
+      </div>
+      <!-- .centered -->
+      <nav class="main-menu">
+      </nav>
+    </header>
+    <!-- .masthead -->
+  
+    <div class="content">
+      <main class="main-area">
+        <article class="post-content">
+          <div id="wrapper">
+            <h1>Title : {{ title }}</h1>
+            <div>
+              <button class="play" tabindex="1"></button>
+              <p>
+                Summary of the story : {{ summary }}
+              </p>
+            </div>
+          </div>
+        </article>
+      </main>
+      </div>
+      
+    
+      </div>
+      <footer class="footer-area">
+        <p>Number of words before : {{ length_before }}<span class="tab">Number of words after : {{ length_after }}</span></p>
+      </footer>
+    <script>
+      
+    let voices = speechSynthesis.getVoices();
+let defaultVoice;
+
+speechSynthesis.onvoiceschanged = () => {
+  voices = speechSynthesis.getVoices();
+  defaultVoice = voices.find((voice) => voice.name === "Microsoft Ravi - English (India)");
+
+  wrapper.addEventListener("click", handleClick);
+  window.addEventListener("keydown", handleKeydown);
+};
+
+const PLAY = "play";
+const PAUSE = "pause";
+const RESUME = "resume";
+
+function handleClick({ target }) {
+  switch (target.className) {
+    case PLAY:
+      speechSynthesis.cancel();
+
+      const { textContent } = target.nextElementSibling;
+
+      textContent.split(".").forEach((text) => {
+        const trimmed = text.trim();
+        if (trimmed) {
+          const U = getUtterance(target, text);
+          speechSynthesis.speak(U);
+        }
+      });
+      break;
+    case PAUSE:
+      target.className = RESUME;
+      speechSynthesis.pause();
+      break;
+    case RESUME:
+      target.className = PAUSE;
+      speechSynthesis.resume();
+      break;
+    default:
+      break;
+  }
+}
+
+function handleKeydown({ code }) {
+  switch (code) {
+    case "Escape":
+      return speechSynthesis.cancel();
+    default:
+      break;
+  }
+}
+
+function getUtterance(target, text) {
+  const U = new SpeechSynthesisUtterance(text);
+  U.voice = defaultVoice;
+  U.lang = defaultVoice.lang;
+  U.volume = 1;
+  U.rate = 0.80;
+  U.pitch = 1;
+
+  U.onstart = () => {
+    console.log("Started");
+    target.className = PAUSE;
+  };
+  U.onend = () => {
+    console.log("Finished");
+    target.className = PLAY;
+  };
+  U.onerror = (err) => console.error(err);
+
+  return U;
+}
+(function($) {
+  $('a.sidebar-left-toggle').click(function () {
+    if (!$('.sidebar').hasClass('.sidebar-left')) {
+      $('.sidebar').addClass('sidebar-left');
+    }
+  });
+  
+  $('a.sidebar-right-toggle').click(function () {
+    if ($('.sidebar').hasClass('sidebar-left')) {
+      $('.sidebar').removeClass('sidebar-left');
+    }   
+  });
+  
+  $('a.no-sidebar-toggle').click(function () {
+    if (!$('.content').hasClass('no-sidebar')) {
+      $('.content').addClass('no-sidebar');
+    } else {
+      $('.content').removeClass('no-sidebar');
+    }
+  });
+  
+  $('a.hide-sidebar-toggle').click(function() {
+    if (!$('.sidebar').hasClass('hide')){
+      $('.sidebar').addClass('hide');
+    } else {
+      $('.sidebar').removeClass('hide');  
+    }
+  });
+  
+}(jQuery));
+  </script>
+  {% endblock %}
+  
+</body>
+</html>
