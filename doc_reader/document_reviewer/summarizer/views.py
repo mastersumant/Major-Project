@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from summarizer.final_code import main
+from .final_code_long import main1 
+from .final_code_short import main2
 import os
 from subprocess import Popen
 import PyPDF2
@@ -15,6 +16,11 @@ def check_med(request):
         return HttpResponse(form_page)
      print("5")
      title=request.POST.get('summary_title',False)
+     type_of_summary = request.POST.get('type_of_summary')
+     print(type_of_summary)
+     t=open('details.txt',"w")
+     t.write(str(type_of_summary))
+     t.close()
     #  if request.method == 'POST' and request.FILES['pdf']:
 
     #     pdfFileObj = request.FILES['pdf'].read() 
@@ -34,15 +40,17 @@ def check_med(request):
         with open(os.path.join("summarizer\\1.txt"), 'wb+') as destination:
           for chunk in request.FILES['text'].chunks():
             destination.write(chunk)
-     
-     summary,l_before=main()
+     if type_of_summary=='0.1':
+        summary,l_before=main1()
+     elif type_of_summary=='0.3':
+        summary,l_before=main2()
      l_after=len(summary.strip().split())
     #  print(summary)
      if (not summary):
          summary='No summary found'
      else:
         pass
-     context={'title':title ,'summary':summary,'length_before':l_before,'length_after':l_after}
+     context={'title':title ,'summary':summary,'length_before':l_before,'length_after':l_after,'type_of_summary':type_of_summary}
      print("Number of word in original document {}".format(l_before))
      print("Number of word in summary {}".format(l_after))
      return render(request,"summary.html",context)
@@ -409,6 +417,57 @@ footer a {
   border-bottom: 1px solid #fff;
   padding-bottom: 5px;
 }
+
+
+.switch-field {
+	display: flex;
+  margin-left: 70px;
+	margin-bottom: 36px;
+	overflow: hidden;
+}
+
+.switch-field input {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+	border: 0;
+	overflow: hidden;
+}
+
+.switch-field label {
+	background-color: #e4e4e4;
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 14px;
+	line-height: 1;
+	text-align: center;
+	padding: 8px 16px;
+	margin-right: -1px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+	transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+	cursor: pointer;
+}
+
+.switch-field input:checked + label {
+	background-color: #a5dc86;
+	box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+	border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+	border-radius: 0 4px 4px 0;
+}
+
+/* This is just for CodePen. */
+
+
     </style>
 </head>
 <body>
@@ -432,7 +491,6 @@ footer a {
     <form  action="http://127.0.0.1:8000/summary/" id="mForm"  method="post"  enctype="multipart/form-data">
     <section class="active">
       <input  placeholder="Title" id="title" name="summary_title" requiered >
-   
       
       
       <div class="images" >
@@ -443,9 +501,13 @@ footer a {
       
     </section>
 
-    <section>
-      <input type="text" placeholder="Topic" id="topic"/>
-      <textarea placeholder="something..." id="msg"></textarea>
+    <section class="active">
+	<div class="switch-field">
+		<input type="radio" id="radio-one" name="type_of_summary" value="0.1" checked/>
+		<label for="radio-one">Long term</label>
+		<input type="radio" id="radio-two" name="type_of_summary" value="0.3" />
+		<label for="radio-two">Short term</label>
+	</div>
     </section>
   
   </div>

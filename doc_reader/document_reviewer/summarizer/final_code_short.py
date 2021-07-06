@@ -1,4 +1,4 @@
-def main():
+def main2():
 # coding: utf-8
 
 # # Text Summarization in Python
@@ -410,4 +410,4 @@ def main():
 
 # # End of the notebook
 if __name__=="__main__":
-    main()
+    main2()

@@ -1,4 +1,4 @@
-def main():
+def main1():
 # coding: utf-8
 
 # # Text Summarization in Python
@@ -362,7 +362,7 @@ def main():
 # Calculation of threshold:
 # We take the mean value of normalized scores
 # any sentence with the normalized score 0.2 more than the mean value is considered to be
-    threshold = (sum(temp_array) / len(temp_array)) + 0.3
+    threshold = (sum(temp_array) / len(temp_array)) + 0.1
 
 
 # In[97]:
@@ -410,4 +410,4 @@ def main():
 
 # # End of the notebook
 if __name__=="__main__":
-    main()
+    main1()
