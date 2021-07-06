@@ -32,6 +32,7 @@ Clone/Download this project and extract it into your desired folder.
 ### Run the code
 Run manage.py on Anaconda
 By Typing : python manage.py runserver
+by default django will take IP address as "127.0.0.1" and Port as "8000"
 
 When asked for file input, please provide the name of any file already in the directory whose summary you want to create.
 
