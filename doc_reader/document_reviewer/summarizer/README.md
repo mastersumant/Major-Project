@@ -34,7 +34,7 @@ Run manage.py on Anaconda
 By Typing : **python manage.py runserver**
 By default django will take IP address as **"127.0.0.1"** and Port as **"8000"**
 
-I have included 5 sample files: Artificial Intelligence.txt,data structure.txt,story1.txt, story2.txt, story3.pdf for analyizing the summarizer or you can upload any story as per your wish.
+I have included 5 sample files: *Artificial Intelligence.txt,data structure.txt,story1.txt, story2.txt, story3.pdf* for analyizing the summarizer or you can upload any story as per your wish.
 
 After Creating django server you need to open Any browser of your choice like chrome,firefox,etc and follow the below steps to get the summary:
 1. Enter url: *http://127.0.0.1:8000/summary/* in browser.
@@ -46,4 +46,4 @@ After Creating django server you need to open Any browser of your choice like ch
 7. To *Play* the story press 🔊 icon on the screen.
 8. To *pause* the story press 🔇 icon on the screen.
 9. To *resume* the stroy from the same point press 🔉 icon on the screen.
-10. In the bottom you can check number of words *before and *after the summarizer.
+10. In the bottom you can check number of words *before* and *after* the summarizer.
