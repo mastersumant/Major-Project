@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .final_code_long import main1 
-from .final_code_short import main2
+from .final_code_long import main_long_pdf, main_long_txt 
+from .final_code_short import main_short_pdf,main_short_txt
 import os
 from subprocess import Popen
 import PyPDF2
@@ -12,15 +12,15 @@ import io
 
 @csrf_exempt
 def check_med(request): 
-     if request.method != 'POST': 
+    if request.method != 'POST': 
         return HttpResponse(form_page)
-     print("5")
-     title=request.POST.get('summary_title',False)
-     type_of_summary = request.POST.get('type_of_summary')
-     print(type_of_summary)
-     t=open('details.txt',"w")
-     t.write(str(type_of_summary))
-     t.close()
+    print("5")
+    title=request.POST.get('summary_title',False)
+    type_of_summary = request.POST.get('type_of_summary')
+    print(type_of_summary)
+    t=open('details.txt',"w")
+    t.write(str(type_of_summary))
+    t.close()
     #  if request.method == 'POST' and request.FILES['pdf']:
 
     #     pdfFileObj = request.FILES['pdf'].read() 
@@ -36,24 +36,36 @@ def check_med(request):
     #       content+='\n\n'
     #       destination.write(content.encode())
     #     print(content)
-     if request.method == 'POST' and request.FILES['text']:    
+    file_name=str(request.FILES['text'])
+    file_format=file_name.split(".")[-1]
+    print(file_format)
+    if request.method == 'POST' and request.FILES['text'] and file_format=="txt" :    
         with open(os.path.join("summarizer\\1.txt"), 'wb+') as destination:
-          for chunk in request.FILES['text'].chunks():
-            destination.write(chunk)
-     if type_of_summary=='0.1':
-        summary,l_before=main1()
-     elif type_of_summary=='0.3':
-        summary,l_before=main2()
-     l_after=len(summary.strip().split())
+            for chunk in request.FILES['text'].chunks():
+                destination.write(chunk)
+    elif request.method == 'POST' and request.FILES['text'] and file_format=="pdf":    
+        with open(os.path.join("summarizer\\2.pdf"), 'wb+') as destination:
+            for chunk in request.FILES['text'].chunks():
+                destination.write(chunk)
+     
+    if type_of_summary=='0.1' and file_format =="txt":
+        summary,l_before=main_long_txt()
+    elif type_of_summary=='0.3' and file_format =="txt":
+        summary,l_before=main_short_txt()
+    elif type_of_summary=='0.1' and file_format== "pdf":
+        summary,l_before=main_long_pdf()
+    elif type_of_summary=='0.3' and file_format=="pdf":
+        summary,l_before=main_short_pdf()
+    l_after=len(summary.strip().split())
     #  print(summary)
-     if (not summary):
-         summary='No summary found'
-     else:
+    if (not summary):
+        summary='No summary found'
+    else:
         pass
-     context={'title':title ,'summary':summary,'length_before':l_before,'length_after':l_after,'type_of_summary':type_of_summary}
-     print("Number of word in original document {}".format(l_before))
-     print("Number of word in summary {}".format(l_after))
-     return render(request,"summary.html",context)
+    context={'title':title ,'summary':summary,'length_before':l_before,'length_after':l_after,'type_of_summary':type_of_summary}
+    print("Number of word in original document {}".format(l_before))
+    print("Number of word in summary {}".format(l_after))
+    return render(request,"summary.html",context)
      
 # def about(request):
 #     file_n=main()
@@ -494,7 +506,7 @@ footer a {
       
       
       <div class="images" >
-        <input type="file"  name="text" id="input1" accept=".txt" >
+        <input type="file"  name="text" id="input1" accept=".txt,.pdf" >
       </div>  
       
       
